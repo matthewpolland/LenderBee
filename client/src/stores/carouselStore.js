@@ -2,17 +2,17 @@ var React = require('react');
 var Reflux = require('reflux');
 var request = require('superagent');
 var actions = require('../actions/actions.js');
+var userStore = require('./user.js')
 
 var carouselStore = Reflux.createStore({
   
-  data: {count: 0, items: ["lol","wat","cool","more","fun","pool","party","hooray","yay","k"]},
+  data: {count: 0, items: []},
 
   listenables: [actions],
 
   onNextCarousel: function(){
     this.shiftItems(true);
   },
-
   onPrevCarousel: function(){
     this.shiftItems(false);
   },
@@ -37,24 +37,26 @@ var carouselStore = Reflux.createStore({
   },
 
   init: function(){
-   //  request.get("/api/items/:user", function(res){
-   //    console.log(res.body);
-   //    this.data.items[0] = res.body.hi;
-   //    this.trigger(this.data);
-   // })
+    var userId = userStore.getProp('id'); 
+    request.get('/api/items/allcity/'+userId, function(res){
+      console.log(res.body);
+      this.data.items = res.body;
+      this.trigger(this.data);
+   })
   },
 
   getInitialState: function() {
-    // var first = [];
-    // for (var i=0; i<3; i++){
-    //   first.push(this.data.items[i]);
+    // var stuff = []
+    // for(var i=0; i<60; i++){
+    //   stuff.push({img: "img"+i, itemid: "itemid"+i, cost: i, disc: "name"+i});
     // }
-    // return first;
-    var display = {items: []};
-    for (var i=0; i<3; i++){
-      display.items.push(this.data.items[i]);
-    }
-    return display;
+    // console.log("BIG STUFF: ", stuff);
+    // this.data.items = stuff;    
+    // var display = {items: []};
+    // for (var i=0; i<3; i++){
+    //   display.items.push(this.data.items[i]);
+    // }
+    return this.data;
   }
 })
 
