@@ -42,6 +42,10 @@ var carousel = React.createClass({
     actions.nextCarousel();
   },
 
+  // componentDidMount: function(){
+  //   actions.randomItems("ha");
+  // },
+
   render: function() {
     var items = this.state.items.map(function(item) {
       return (<InnerImage itemInfo={item} />);
