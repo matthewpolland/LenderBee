@@ -3,6 +3,8 @@ var Reflux = require('reflux');
 var carouselStore = require('../../stores/CarouselStore.js');
 var actions = require('../../actions/actions.js');
 var searchStore = require('../../stores/searchStore');
+var Router = require('react-router');
+var Link = Router.Link;
 
 var InnerImage = React.createClass({
 
@@ -39,6 +41,10 @@ var carousel = React.createClass({
   handleRightArrowClick: function(evt){
     actions.nextCarousel();
   },
+
+  // componentDidMount: function(){
+  //   actions.randomItems("ha");
+  // },
 
   render: function() {
     var items = this.state.items.map(function(item) {

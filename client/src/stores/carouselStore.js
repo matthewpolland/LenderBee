@@ -36,13 +36,25 @@ var carouselStore = Reflux.createStore({
     this.trigger(display);
   },
 
-  init: function(){
-    var userId = userStore.getProp('id'); 
-    request.get('/api/items/allcity/'+userId, function(res){
+  onRandomItems: function(info){
+    console.log("COOL BEANS: ", info);
+    request.get('/api/items/allcity/'+info, function(res){
       console.log(res.body);
-      this.data.items = res.body;
+      this.data.items = this.shuffle(res.body);
       this.trigger(this.data);
-   })
+    }).bind(this);
+  },
+
+  shuffle: function(array) {
+      var counter = array.length, temp, index;
+      while (counter > 0) {
+          index = Math.floor(Math.random() * counter);
+          counter--;
+          temp = array[counter];
+          array[counter] = array[index];
+          array[index] = temp;
+      }
+      return array;
   },
 
   getInitialState: function() {
